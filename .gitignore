@@ -205,3 +205,10 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+
+# Bibtex, pdf and logs
+**/refs*
+logs/stats.csv
+logs/execution.log
+output/pdf/*.pdf
