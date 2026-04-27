@@ -26,8 +26,8 @@ services:
     extra_hosts:
     - "host.docker.internal:host-gateway"
     volumes:
-      - ./output:/app/output
-      - ./logs:/app/logs
+      - ../output:/app/output
+      - ../logs:/app/logs
     stdin_open: true
     tty: true
 
