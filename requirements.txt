@@ -1,5 +1,7 @@
 ollama
 fpdf
 requests
+pydantic
+pydantic_settings
 bibtexparser
 python-dotenv
