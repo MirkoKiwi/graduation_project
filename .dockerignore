@@ -1,0 +1,25 @@
+# Git metadata
+.git
+.github
+.gitignore
+
+# Env files — never bake secrets into the image
+.env
+.env.*
+venv/
+
+# Logs and debug
+*.log
+logs/
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+.vscode
+.idea
+
+# Hallucinator
+hallucinator/
+
+# Docker context itself
+Docker/
