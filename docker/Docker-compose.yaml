@@ -16,7 +16,9 @@ services:
 #    tty: true
   
   app:
-    build: ..
+    build:
+      context: ..
+      dockerfile: Dockerfile
     container_name: "graduation_project"
     #depends_on:
     #  - ollama

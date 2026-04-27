@@ -49,7 +49,7 @@ class _Config:
 class _Settings(BaseSettings):
     ollama_api_host: str
     model_name:      str
-#= "http://127.0.0.1:11434"
+
     model_config = SettingsConfigDict(
         env_file=BASE_DIR / ".env",
         env_file_encoding="utf-8",
