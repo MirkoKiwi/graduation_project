@@ -212,3 +212,12 @@ __marimo__/
 logs/stats.csv
 logs/execution.log
 output/pdf/*.pdf
+
+
+# Ollama
+ollama_data/
+
+
+# Temporary files
+tmp/
+temp/

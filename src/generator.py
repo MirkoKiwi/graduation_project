@@ -5,9 +5,9 @@ from config import settings
 
 
 def get_llm_references(user_in):
-    client = Client(host=settings.ollama_host)
+    client = Client(host=settings.ollama_api_host)
 
-    prompt = f"Cite 5 real academic studies about: {user_in}"
+    prompt = f"Cite 10 real academic studies, in bibtex format, about: {user_in}"
 
     try:
         response = client.chat(

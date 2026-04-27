@@ -1,6 +1,10 @@
 from pathlib import Path
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+
+
+BASE_DIR = Path(__file__).resolve().parent
 
 
 class _Config:
@@ -38,22 +42,22 @@ class _Config:
     def logs_dir(self) -> Path:
         d = self.root_dir / "logs"
         d.mkdir(parents=True, exist_ok=True)
-        return d    
+        return d
 
 
 
 class _Settings(BaseSettings):
-    ollama_host: str = "http://localhost:11434"
-    model_name:  str = "llama3"
-    
-
+    ollama_api_host: str
+    model_name:      str
+#= "http://127.0.0.1:11434"
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=BASE_DIR / ".env",
         env_file_encoding="utf-8",
-        extra="ignore"
+        extra="ignore",
+        env_ignore_empty=True
     )
 
 
 
-config: _Config     = _Config()
+config:   _Config   = _Config()
 settings: _Settings = _Settings()
