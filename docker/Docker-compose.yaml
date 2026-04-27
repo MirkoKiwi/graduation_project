@@ -1,0 +1,35 @@
+services:
+  
+#  ollama:
+#    image: ollama/ollama:latest
+#    container_name: "ollama_container"
+#    environment:
+#      - OLLAMA_HOST=http://host.docker.internal:11434
+#      - MODEL_NAME=llama3
+#    ports:
+#      - "11434:11434"
+#    volumes:
+#      - ./ollama_data:/root/.ollama
+#    extra_hosts:
+#    - "host.docker.internal:host-gateway"
+#    stdin_open: true
+#    tty: true
+  
+  app:
+    build: ..
+    container_name: "graduation_project"
+    #depends_on:
+    #  - ollama
+    environment:
+      - OLLAMA_API_HOST=http://host.docker.internal:11434
+      - MODEL_NAME=llama3
+    extra_hosts:
+    - "host.docker.internal:host-gateway"
+    volumes:
+      - ./output:/app/output
+      - ./logs:/app/logs
+    stdin_open: true
+    tty: true
+
+volumes:
+  ollama_data:
