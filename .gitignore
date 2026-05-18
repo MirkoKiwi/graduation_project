@@ -221,3 +221,13 @@ ollama_data/
 # Temporary files
 tmp/
 temp/
+
+
+# ChromaDB Stuff
+db/
+
+# Output
+output/
+
+# Hallucinator
+hallucinator/
