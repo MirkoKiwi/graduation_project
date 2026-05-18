@@ -2,7 +2,7 @@ from src.vector_db import VectorDB
 
 
 
-def inject_entru():
+def inject_entry():
     vecDb = VectorDB()
 
     poison_text = """
@@ -37,4 +37,4 @@ def inject_entru():
 
 
 if __name__ == "__main__":
-    inject_entru()
+    inject_entry()
