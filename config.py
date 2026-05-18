@@ -43,6 +43,12 @@ class _Config:
         d = self.root_dir / "logs"
         d.mkdir(parents=True, exist_ok=True)
         return d
+    
+    @property
+    def vec_db_dir(self) -> Path:
+        d = self.root_dir / "db"
+        d.mkdir(parents=True, exist_ok=True)
+        return d
 
 
 

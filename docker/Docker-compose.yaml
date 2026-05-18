@@ -1,3 +1,5 @@
+name: graduation_project
+
 services:
   
 #  ollama:
@@ -28,6 +30,7 @@ services:
     extra_hosts:
     - "host.docker.internal:host-gateway"
     volumes:
+      - ../db:/app/db
       - ../output:/app/output
       - ../logs:/app/logs
     stdin_open: true

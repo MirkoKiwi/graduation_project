@@ -6,7 +6,7 @@ import re
 from config import settings
 
 
-def ensure_ollama_is_running():
+def ollama_check():
     host = settings.ollama_api_host
     print(f"OLLAMA Host:   {host}")
     print(f"Current Model: {settings.model_name}")
