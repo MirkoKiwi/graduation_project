@@ -30,7 +30,7 @@ def main():
             suffix      = "_rag"
             print(f"\33[45m[*]\33[0m RAG")
         else:
-            prompt      = user_in[8:].strip()
+            prompt      = user_in
             print(f"\33[44m[*]\33[0m NO RAG")
 
         print("\33[44m[*]\33[0m Generating...")
