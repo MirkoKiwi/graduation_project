@@ -225,6 +225,7 @@ temp/
 
 # ChromaDB Stuff
 db/
+data/
 
 # Output
 output/
