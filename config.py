@@ -49,7 +49,12 @@ class _Config:
         d = self.root_dir / "db"
         d.mkdir(parents=True, exist_ok=True)
         return d
-
+    
+    @property
+    def data_dir(self) -> Path:
+        d = self.root_dir / "data"
+        d.mkdir(parents=True, exist_ok=True)
+        return d
 
 
 class _Settings(BaseSettings):
