@@ -54,11 +54,12 @@ class VectorDB:
                 n_results=n_results
             )
             
-            if not results or not results.get('documents') or not results['documents'][0]:
+            if not results or not results.get('metadatas') or not results['metadatas'][0]:
                 return ""
-                
-            return "\n\n".join(results['documents'][0])
             
+            bibtex_slice = [meta["bibtex"] for meta in results['metadatas'][0] if "bibtex" in meta]
+            return "\n\n".join(bibtex_slice)
+        
         except Exception as e:
             print(f"Error querying ChromaDB: {e}")
             return ""
