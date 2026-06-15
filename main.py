@@ -4,6 +4,7 @@ import os
 from src.generator import get_llm_response, get_llm_rag
 from src.formatter import save_bibtex
 from utils.helpers import ollama_check
+from evaluation.hallucinator_eval import verify_bibtex_string
 
 
 
@@ -28,12 +29,12 @@ def main():
             rag_enabled = True
             prompt      = user_in[5:].strip()
             suffix      = "_rag"
-            print(f"\33[45m[*]\33[0m RAG")
+            print(f"\33[35m[*] RAG\33[40m")
         else:
             prompt      = user_in
-            print(f"\33[44m[*]\33[0m NO RAG")
+            print(f"\33[34m[*] NO RAG\33[40m")
 
-        print("\33[44m[*]\33[0m Generating...")
+        print("\33[34m[*] \33[0mGenerating...")
         
 
         if rag_enabled:
@@ -49,6 +50,17 @@ def main():
 
         print(f"\33[44m[+]\33[0m BibTeX saved at: {bib_path}")
         print(f"\n\33[0m--- \33[32mCOMPLETED \33[0m---")
+
+        print(f"\33[0m--- HALLUCINATOR ANALYSIS \33[0m---\n")
+        hallucinator_report = verify_bibtex_string(raw_output)
+        
+        if hallucinator_report:
+            verified = sum(1 for r in hallucinator_report if r.status == "verified")
+            print(f"  └─ Control done. Legitimate refs: {verified}/{len(hallucinator_report)}")
+        
+        print(f"\n\33[0m--- \33[32mCOMPLETED \33[0m---")
+        print(hallucinator_report)
+
 
 
 
