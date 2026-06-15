@@ -13,7 +13,7 @@ def ollama_check():
     
     try:
         requests.get(f"{host}/api/tags", timeout=3)
-        print(f"\33[42m[*]\33[0m Ollama connected on {host}")
+        print(f"\33[32m[*]\33[0m Ollama connected on {host}")
     except Exception as e:
         print(f"\33[41m[!]\33[0m Error, unreachable on {host}")
         print(f"Error {e}")
