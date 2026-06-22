@@ -12,7 +12,7 @@ from config import config
 
 
 
-def verify_references(references: list[Reference]) -> list:
+def _verify_references(references: list[Reference]) -> list:
     if not references:
         return []
 
@@ -29,28 +29,29 @@ def verify_references(references: list[Reference]) -> list:
 
 
 
-def parse_bibtex_to_references(generated_bibs: str) -> list[Reference]:
+def _parse_bibtex_to_references(generated_bibs: str) -> list[Reference]:
     references = []
     
     try:
         if "@" in generated_bibs:
             bib_db = bibtexparser.loads(generated_bibs)
+
             for entry in bib_db.entries:
                 title = entry.get("title")
                 if not title:
                     continue
                 
-                title = clean_bibtex_field(title)
+                title = _clean_bibtex_field(title)
                 
                 # Parse authors
                 author_str = entry.get("author", "")
                 authors = []
                 if author_str:
-                    author_str = clean_bibtex_field(author_str)
+                    author_str = _clean_bibtex_field(author_str)
                     authors = [a.strip() for a in author_str.split(" and ")]
                 
-                doi      = clean_bibtex_field(entry.get("doi", ""))
-                arxiv_id = clean_bibtex_field(entry.get("eprint", "") or entry.get("arxiv", ""))
+                doi      = _clean_bibtex_field(entry.get("doi", ""))
+                arxiv_id = _clean_bibtex_field(entry.get("eprint", "") or entry.get("arxiv", ""))
                 
                 references.append(Reference(title=title, authors=authors, doi=doi, arxiv_id=arxiv_id))
 
@@ -61,7 +62,7 @@ def parse_bibtex_to_references(generated_bibs: str) -> list[Reference]:
 
 
 
-def clean_bibtex_field(bib_field: str) -> str:
+def _clean_bibtex_field(bib_field: str) -> str:
     if not bib_field:
         return ""
     
@@ -78,6 +79,6 @@ def clean_bibtex_field(bib_field: str) -> str:
 
 
 
-def verify_bibtex_string(raw_output: str) -> list:
-    refs = parse_bibtex_to_references(raw_output)
-    return verify_references(refs)
+def verify_bibtex_string(generated_references: str) -> list:
+    refs = _parse_bibtex_to_references(generated_references)
+    return _verify_references(refs)

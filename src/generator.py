@@ -6,12 +6,12 @@ from src.vector_db import VectorDB
 
 
 
-def get_llm_response(user_in):
+def get_llm_response(input_query):
     client = Client(host=settings.ollama_api_host)
 
     prompt = f"""
     You're an assistant in research.
-    Cite any real academic studies, in bibtex format, about: {user_in}
+    Cite any real academic studies, in bibtex format, about: {input_query}
     """
 
     try:
