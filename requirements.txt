@@ -7,3 +7,5 @@ bibtexparser
 python-dotenv
 chromadb
 hallucinator
+beautifulsoup4
+pypdf
