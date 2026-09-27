@@ -61,7 +61,6 @@ def main():
         print(f"\n\33[0m--- \33[32mCOMPLETED \33[0m---")
         print(print_hallucinator_stats(hallucinator_report))
 
-        user_in = ""
 
 
 

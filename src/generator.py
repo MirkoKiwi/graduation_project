@@ -40,13 +40,14 @@ def get_llm_rag(input_query):
     instruction_prompt = f"""
     You're an assistant in research.
     Use ONLY and EXCLUSIVELY documents given in the CONTEXT under here to answer the USER REQUEST.
-    If the context doesn't contain anything related, answer saying that you didn't find any existing source.
+    If the context doesn't contain anything related, answer saying that "I did not find any existing source".
 
     CONTEXT:
     {context}
 
     USER REQUEST:
-    Cite any real academic studies, in bibtex format, about: {input_query}
+    1. Cite any real academic studies, in bibtex format, about: {input_query}
+    2. Provide BibTeX references for studies cited in paragraph.
     """
 
     print(f"[DEBUG] End of context")

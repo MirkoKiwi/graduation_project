@@ -1,6 +1,7 @@
 import re
 import sys
 
+from collections.abc import Callable
 from pathlib import Path
 import bibtexparser
 from hallucinator import Reference, Validator, ValidatorConfig, PdfExtractor, ProgressEvent
@@ -30,8 +31,8 @@ def _verify_references(references: list[Reference]) -> list:
 
 
 
-def _track_progress():
-    def on_progress(event):
+def _track_progress() -> Callable:
+    def on_progress(event) -> None:
         if event.event_type == "checking":
             ref_title = event.title
             print(f"  \33[34m[Checking]...\33[0m [{event.index + 1}/{event.total}] {ref_title}\033[K", end="\r")
@@ -116,7 +117,7 @@ def _clean_bibtex_field(bib_field: str) -> str:
 
 
 def verify_bibtex_string(generated_references: str) -> list:
-    if "@" not in generated_references or "I did not find any" in generated_references:
+    if "@" not in generated_references or "I did not find any existing source" in generated_references:
         print("[!] No valid references found!")
         return []
     
