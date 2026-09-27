@@ -1,16 +1,23 @@
 import sqlite3
 import os
+import argparse
 
 from src.vector_db import VectorDB
 from config import config
 
 
-# Load Dataset
-def start_ingest():
-    vec_db = VectorDB()
-    print(f"[*] DB Init. Current docs: {vec_db.count}")
 
-    db_filename = "acl.db"
+DB_FILENAME = "acl.db"
+
+# Load Dataset
+def start_ingest(mode="title_abstract"):
+    
+    collection_name = f"acl_{mode}"
+    vec_db          = VectorDB(collection_name=collection_name)
+    print(f"[*] DB Init.\n Mode: {mode} -> Collection: {collection_name}\n Current docs: {vec_db.count}")
+
+
+    db_filename = DB_FILENAME
     sqlite_path = config.data_dir / db_filename
     
     if not os.path.exists(sqlite_path):
@@ -28,6 +35,7 @@ def start_ingest():
                 p.title,
                 p.url,
                 p.doi,
+                p.abstract,
                 a.name
             FROM publications p
             LEFT JOIN publication_authors pa ON p.id = pa.pub_id
@@ -41,12 +49,13 @@ def start_ingest():
         return
 
     papers = {}
-    for p_id, title, url, doi, author_name in rows:
+    for p_id, title, url, doi, abstract, author_name in rows:
         if p_id not in papers:
             papers[p_id] = {
                 "title": title,
                 "url": url or "",
                 "doi": doi or "",
+                "abstract": abstract or "",
                 "authors": []
             }
         if author_name:
@@ -58,15 +67,19 @@ def start_ingest():
     ids       = []
     metadatas = []
     for p_id, info in papers.items():
-        title = info["title"]
-        authors_list = info["authors"]
+        title         = info["title"]
+        authors_list  = info["authors"]
+        
         authors_comma = ", ".join(authors_list) if authors_list else "Unknown"
-        authors_and = " and ".join(authors_list) if authors_list else "Unknown"
+        authors_and   = " and ".join(authors_list) if authors_list else "Unknown"
+        
         url = info["url"]
         doi = info["doi"]
-        
 
-        full_text = f"Title: {title}\nAuthors: {authors_comma}"
+        if mode == "title_only":
+            full_text = f"Title: {title}\nAuthors: {authors_comma}"
+        else:
+            full_text = f"Title: {title}\nAuthors: {authors_comma}\nAbstract: {info['abstract']}"
         
         bib_entry = f"""
             @article{{{p_id},
@@ -104,4 +117,7 @@ def start_ingest():
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--mode", choices=["title_only", "title_abstract"], default="title_abstract")
+    args = parser.parse_args()
     start_ingest()
