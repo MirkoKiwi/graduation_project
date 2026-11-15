@@ -3,7 +3,7 @@ fpdf
 requests
 pydantic
 pydantic_settings
-bibtexparser
+bibtexparser>=2.0.0
 python-dotenv
 chromadb
 hallucinator

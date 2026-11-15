@@ -8,7 +8,7 @@ from config import config, settings
 class VectorDB:
     def __init__(self, collection_name: str = "acl_title_abstract"):
         self._client         = chromadb.PersistentClient(path=str(config.vec_db_dir))
-        self._collection     = self._client.get_or_create_collection(name="references")
+        self._collection     = self._client.get_or_create_collection(name=collection_name)
         self.collection_name = collection_name
 
 

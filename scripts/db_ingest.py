@@ -120,4 +120,4 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--mode", choices=["title_only", "title_abstract"], default="title_abstract")
     args = parser.parse_args()
-    start_ingest()
+    start_ingest(mode=args.mode)

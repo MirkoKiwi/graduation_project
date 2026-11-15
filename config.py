@@ -58,8 +58,9 @@ class _Config:
 
 
 class _Settings(BaseSettings):
-    ollama_api_host: str
-    model_name:      str
+    ollama_api_host:    str
+    model_name:         str
+    scraper_user_agent: str
 
     model_config = SettingsConfigDict(
         env_file=BASE_DIR / ".env",
