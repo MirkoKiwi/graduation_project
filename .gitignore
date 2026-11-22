@@ -232,3 +232,6 @@ output/
 
 # Hallucinator
 hallucinator/
+
+# Sf extension
+.sf/
