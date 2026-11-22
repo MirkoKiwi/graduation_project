@@ -8,8 +8,8 @@ from config import config, settings
 class VectorDB:
     def __init__(self, collection_name: str = "acl_title_abstract"):
         self._client         = chromadb.PersistentClient(path=str(config.vec_db_dir))
-        self._collection     = self._client.get_or_create_collection(name=collection_name)
         self.collection_name = collection_name
+        self._collection     = self._client.get_or_create_collection(name=self.collection_name)
 
 
     @property
@@ -38,7 +38,7 @@ class VectorDB:
 
     def add_docs(self, documents: list[str], ids: list[str], metadatas: list[dict]) -> None:
         try:
-            self._collection.add(
+            self._collection.upsert(
                 documents=documents,
                 metadatas=metadatas,
                 ids=ids
@@ -52,14 +52,23 @@ class VectorDB:
         try:
             results = self._collection.query(
                 query_texts=[query_text],
+                include=["documents", "metadatas", "distances"],
                 n_results=n_results
             )
             
-            if not results or not results.get('metadatas') or not results['metadatas'][0]:
+            if not results or not results.get('documents') or not results['documents'][0]:
                 return ""
+
+            context_blocks = []
+            docs = results['documents'][0]
+            metas = results['metadatas'][0]
+
+            for doc, meta in zip(docs, metas):
+                bib = meta.get("bibtext", "")
+                block = f"DOCUMENT CONTENT:\n{doc}\n\nCORRESPONDING BIBTEX:\n{bib}"
+                context_blocks.append(block)
             
-            bibtex_slice = [meta["bibtex"] for meta in results['metadatas'][0] if "bibtex" in meta]
-            return "\n\n".join(bibtex_slice)
+            return "\n\n".join(context_blocks)
         
         except Exception as e:
             print(f"Error querying ChromaDB: {e}")
