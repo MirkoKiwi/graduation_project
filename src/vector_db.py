@@ -64,7 +64,7 @@ class VectorDB:
             metas = results['metadatas'][0]
 
             for doc, meta in zip(docs, metas):
-                bib = meta.get("bibtext", "")
+                bib = meta.get("bibtex", "")
                 block = f"DOCUMENT CONTENT:\n{doc}\n\nCORRESPONDING BIBTEX:\n{bib}"
                 context_blocks.append(block)
             
