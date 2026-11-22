@@ -1,3 +1,10 @@
+"""
+Usage:
+    python -m scripts.db_ingest --mode title_only
+    python -m scripts.db_ingest --mode title_abstract
+"""
+
+
 import sqlite3
 import os
 import argparse
