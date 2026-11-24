@@ -9,3 +9,4 @@ chromadb
 hallucinator
 beautifulsoup4
 pypdf
+pandas
