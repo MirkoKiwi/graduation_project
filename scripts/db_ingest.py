@@ -8,6 +8,7 @@ Usage:
 import sqlite3
 import os
 import argparse
+import sqlite3
 
 from src.vector_db import VectorDB
 from config import config
@@ -24,9 +25,7 @@ def start_ingest(mode="title_abstract"):
     print(f"[*] DB Init.\n Mode: {mode} -> Collection: {collection_name}\n Current docs: {vec_db.count}")
 
 
-    db_filename = DB_FILENAME
-    sqlite_path = config.data_dir / db_filename
-    
+    sqlite_path = config.data_dir / DB_FILENAME
     if not os.path.exists(sqlite_path):
         print(f"Error: {sqlite_path} not found")
         return
@@ -39,6 +38,7 @@ def start_ingest(mode="title_abstract"):
         query = """
             SELECT
                 p.id,
+                p.anthology_id,
                 p.title,
                 p.url,
                 p.doi,
@@ -53,12 +53,14 @@ def start_ingest(mode="title_abstract"):
         rows = cursor.fetchall()
     except Exception as e:
         print(f"[!] SQL Error: {e}")
+        conn.close()
         return
 
     papers = {}
-    for p_id, title, url, doi, abstract, author_name in rows:
+    for p_id, anth_id, title, url, doi, abstract, author_name in rows:
         if p_id not in papers:
             papers[p_id] = {
+                "anthology_id": anth_id or str(p_id),
                 "title": title,
                 "url": url or "",
                 "doi": doi or "",
@@ -82,18 +84,18 @@ def start_ingest(mode="title_abstract"):
         
         url = info["url"]
         doi = info["doi"]
+        abstract = info["abstract"]
 
-        if mode == "title_only":
+        if mode == "title_only" or not abstract:
             full_text = f"Title: {title}\nAuthors: {authors_comma}"
         else:
             full_text = f"Title: {title}\nAuthors: {authors_comma}\nAbstract: {info['abstract']}"
         
         bib_entry = f"""
-            @article{{{p_id},
+            @article{{{info['anthology_id']},
             title={{{title}}},
             author={{{authors_and}}},
             journal={{ACL Anthology}},
-            year={{2023}},
             url={{{url}}},
             doi={{{doi}}}
         }}
